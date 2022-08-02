@@ -6,9 +6,18 @@ module.exports = {
     ],
     theme: {
         fontFamily: {
-            poppins: ['poppins', "sans-serif"]
+            poppins: ["poppins", "sans-serif"],
         },
-        extend: {},
+        extend: {
+            colors: {
+                background: "#264653",
+                primary: "#E9C46A",
+                secondary: "#2A9D8F",
+                heading: "#F4A261",
+                subheading: "#E76F51",
+                simple: "#000000",
+            },
+        },
     },
     plugins: [
         require("tw-elements/dist/plugin"),

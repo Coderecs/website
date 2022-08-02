@@ -8,7 +8,7 @@ export default function NavBar() {
         setNavbar(!navbar);
     };
     return (
-        <nav className="h-[80px] bg-blue-600 flex w-full relative font-poppins justify-between">
+        <nav className="h-[80px] bg-primary flex w-full relative font-poppins justify-between">
             <div className="flex-[0.2]">
                 <Link href={"/"}>
                     <img
@@ -20,7 +20,7 @@ export default function NavBar() {
             </div>
             <div className="flex-[0.2]  flex items-center justify-center md:pr-4">
                 <img
-                    src="/assets/images/rachel.png"
+                    src="/assets/images/user.png"
                     alt=""
                     className="h-[50px] w-[50px] rounded-full object-contain"
                 />
