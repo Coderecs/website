@@ -1,10 +1,10 @@
 import type { NextPage } from 'next'
-import Head from 'next/head'
+import Dashboard from '../components/Home/Dashboard'
 import Layout from '../components/Layout/Layout'
 const Home: NextPage = () => {
   return (
     <Layout title='Coderecs'>
-      
+      <Dashboard />
     </Layout>
   )
 }

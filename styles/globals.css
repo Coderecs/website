@@ -50,3 +50,8 @@
     font-weight: 200;
     font-style: italic;
 }
+@font-face {
+    font-family: "poppins";
+    src: url('../public/assets/fonts/Poppins/Poppins-SemiBold.ttf');
+    font-weight: 500;
+}
