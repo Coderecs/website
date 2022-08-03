@@ -23,7 +23,6 @@ export async function getServerSideProps(context: any) {
         if (session) {
             const docRef = doc(db, "codeforces", session.user?.email!);
             const userCFHandle = await getDoc(docRef);
-          console.log(userCFHandle);
             if (userCFHandle.data()) {
                 return {
                     props: {

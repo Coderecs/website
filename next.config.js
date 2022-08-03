@@ -6,6 +6,10 @@ module.exports = {
         firebase_app_id: process.env.FIREBASE_APP_ID,
     },
     images: {
-        domains: ["lh3.googleusercontent.com", "avatars.githubusercontent.com"],
+        domains: [
+            "lh3.googleusercontent.com",
+            "avatars.githubusercontent.com",
+            "cdn-userpic.codeforces.com",
+        ],
     },
 };
