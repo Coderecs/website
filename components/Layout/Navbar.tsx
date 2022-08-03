@@ -13,11 +13,13 @@ export default function NavBar() {
                 </Link>
             </div>
             <div className="flex-[0.2]  flex items-center md:pr-4 justify-end">
-                <img
-                    src="/assets/images/hottie.jpg"
-                    alt=""
-                    className="h-[50px] w-[50px] rounded-full object-contain"
-                />
+                <Link href={"/account"}>
+                    <img
+                        src="/assets/images/hottie.jpg"
+                        alt=""
+                        className="h-[50px] w-[50px] rounded-full object-contain cursor-pointer"
+                    />
+                </Link>
             </div>
         </nav>
     );
