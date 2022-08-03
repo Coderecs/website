@@ -1,12 +1,6 @@
 import Link from "next/link";
-import { useState } from "react";
-import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 
 export default function NavBar() {
-    const [navbar, setNavbar] = useState(false);
-    const toggle = () => {
-        setNavbar(!navbar);
-    };
     return (
         <nav className="h-[80px] bg-primary flex w-full relative font-poppins justify-between">
             <div className="flex-[0.2] flex justify-start">

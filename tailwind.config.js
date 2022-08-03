@@ -5,6 +5,10 @@ module.exports = {
         "./components/**/*.{js,ts,jsx,tsx}",
     ],
     theme: {
+        backgroundImage: {
+            banner1: "url('/assets/images/banner1.png')",
+            banner2: "url('/assets/images/banner2.png')"
+        },
         fontFamily: {
             poppins: ["poppins", "sans-serif"],
         },
