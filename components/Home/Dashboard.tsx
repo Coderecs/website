@@ -83,12 +83,16 @@ function Dashboard() {
                 <h1 className="font-poppins text-lg text-white">
                     Recommended Problems
                 </h1>
-                <p className="text-white text-sm font-light hidden md:inline-flex">Following problems are recommended according to the previous performance on codeforces</p>
+                <p className="text-white text-sm font-light hidden md:inline-flex">
+                    Following problems are recommended according to the previous
+                    performance on codeforces
+                </p>
                 <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-5 gap-y-5 py-10 ">
-                    {questions.map((question: Question) => {
+                    {questions.map((question: Question, i) => {
                         const { problem, contest, link } = question;
                         return (
                             <Tile
+                                key={i}
                                 problem={problem}
                                 contest={contest}
                                 link={link}
