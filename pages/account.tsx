@@ -8,46 +8,75 @@ import { db } from "../serverless/firebase";
 function account({ loggedIn, cfhandle, user }: any) {
     return (
         <Layout>
-          <Head>
-            <title>
-              {cfhandle} - Coderecs
-            </title>
-          </Head>
-            <div className="flex bg-secondary">
-                <div>
-                    <Image src={`${user.titlePhoto}`} className="w-[250px]" height={250} width={250} />
-                    <div className="flex">
-                        <a href={`https://codeforces.com/profile/${cfhandle}`}>
-                            {" "}
-                            {/* make this color dynamic */}
-                            <p className="p-[7px]  text-blue-700 font-bold text-[15px]">
-                                {user.firstName} {user.lastName}
-                            </p>{" "}
-                        </a>
-                        <img
-                            className="h-[12px] mt-[11px]"
-                            src="/assets/images/Codeforces_logo.svg.png"
+            <div className="w-full h-full flex flex-col lg:flex-row overflow-y-scroll scrollbar-hide pb-10">
+                <Head>
+                    <title>{cfhandle} - Coderecs</title>
+                </Head>
+                <div className="w-full lg:w-1/4  h-full flex flex-col py-4">
+                    <div className="flex-[0.3]  flex items-center justify-center">
+                        <Image
+                            src={user.titlePhoto}
+                            height={200}
+                            width={200}
+                            className="rounded-full"
                         />
                     </div>
-                </div>
-                <div>
-                    <p className="text-[40px] pl-8 pt-2 bg-heading font-poppins">
-                        Hey {user.firstName} !
-                    </p>
-                    <p className="pl-8">
-                        {" "}
-                        Here is what is new while you were away
-                    </p>
+                    <div className="flex-[0.7] flex flex-col pl-20 py-8">
+                        <div className=" flex-1 lg:p-4">
+                            <p className="font-poppins text-2xl">
+                                {user.handle}
+                            </p>
+                            {/* color: dynamic */}
+                            <p className="font-bold text-sm">{user.rank}</p>
 
-                    <div className="flex absolute">
-                        <div className="w-[600px] bg-blue-300 h-[300px] m-[30px] mr-[0px] rounded-md shadow-xl">
-                            bar graph from chrome extension : number of problems
-                            vs rating (solved)
+                            <p className="text-lg">
+                                Rating:{" "}
+                                <span className="font-bold">{user.rating}</span>
+                            </p>
+                            <p className="text-lg">
+                                Max Rating:{" "}
+                                <span className="font-bold">
+                                    {user.maxRating}
+                                </span>{" "}
+                                ({user.maxRank})
+                            </p>
+
+                            <h2 className="text-2xl font-bold underline mt-10">
+                                Personal Details
+                            </h2>
+                            <p>
+                                {user.firstName} {user.lastName}
+                            </p>
+                            <p>{user.email}</p>
+                            <p>
+                                {user.city}, {user.country}
+                            </p>
                         </div>
-                        <div className="w-[500px] bg-blue-300 h-[300px] m-[30px] rounded-md shadow-xl">
-                            pie chart showing number of problems solved
-                            corresponding to particular tag
+                    </div>
+                </div>
+                <div className="w-3/4  h-full p-10">
+                    <h1 className="text-4xl font-poppins font-extrabold">
+                        Hello {user.firstName}!
+                    </h1>
+                    <h2 className="font-poppins font-light">Welcome Back!</h2>
+
+                    <div className="w-full flex  justify-around items-center h-2/5">
+                        <div className="py-5 space-y-4 text-lg font-poppins italic">
+                            <p>Problems Solved : 69</p>
+                            <p>Problems Attempted: 72</p>
+                            <p>Unsolved Problems: 3</p>
+                            <p>Number of contests: 12</p>
                         </div>
+                        <div className="w-1/4 h-full grid place-items-center">
+                            <div className="h-[200px] w-[200px] bg-primary rounded-full text-white flex items-center justify-center">
+                                pie chart of problems
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="w-full h-3/5 flex flex-col md:flex-row space-x-4 items-center justify-evenly">
+                        <div className="h-[90%] w-full md:w-1/2 bg-blue-100 grid place-items-center">Rating of problems</div>
+                        <div className="h-[300px] w-[300px] rounded-full bg-blue-100 grid place-items-center">Topics</div>
                     </div>
                 </div>
             </div>
@@ -91,7 +120,7 @@ export async function getServerSideProps(context: any) {
                 return {
                     props: {
                         user,
-                        cfhandle
+                        cfhandle,
                     },
                 };
             } else {
@@ -112,8 +141,8 @@ export async function getServerSideProps(context: any) {
             loggedIn: false,
         },
         redirect: {
-          destination: '/',
-          permanent: false
-        }
+            destination: "/",
+            permanent: false,
+        },
     };
 }
