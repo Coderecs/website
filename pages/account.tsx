@@ -55,8 +55,8 @@ function account({ loggedIn, cfhandle, user, ratingDict, tagDict }: any) {
                     </div>
                 </div>
                 <div className="w-3/4  h-full p-10">
-                    <h1 className="text-4xl font-poppins font-extrabold">
-                        Hello {user.firstName}!
+                    <h1 className="text-4xl font-poppins font-bold">
+                        Hey {user.firstName}!
                     </h1>
                     <h2 className="font-poppins font-light">Welcome Back!</h2>
 
