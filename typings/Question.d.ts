@@ -1,5 +1,5 @@
 export interface Question {
-    problem: String,
-    contest: String,
+    problem: string,
+    contest: string,
     link: string
 }

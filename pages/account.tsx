@@ -5,7 +5,7 @@ import Image from "next/image";
 import Layout from "../components/Layout/Layout";
 import { db } from "../serverless/firebase";
 
-function account({ loggedIn, cfhandle, user }: any) {
+function account({ loggedIn, cfhandle, user, ratingDict, tagDict }: any) {
     return (
         <Layout>
             <div className="w-full h-full flex flex-col lg:flex-row overflow-y-scroll scrollbar-hide pb-10">
@@ -116,11 +116,15 @@ export async function getServerSideProps(context: any) {
                     maxRating: json["maxRating"] || null,
                     titlePhoto: json["titlePhoto"] || null,
                 };
-
+                // workspace
+                let tagDict={}, ratingDict={}
+                
                 return {
                     props: {
                         user,
                         cfhandle,
+                        tagDict,
+                        ratingDict
                     },
                 };
             } else {
