@@ -4,6 +4,7 @@ import Head from "next/head";
 import Image from "next/image";
 import Layout from "../components/Layout/Layout";
 import { db } from "../serverless/firebase";
+import {ratingDictBuilder, tagsDictBuilder} from "../lib/userDetails";
 
 function account({ loggedIn, cfhandle, user, ratingDict, tagDict }: any) {
     return (
@@ -117,7 +118,37 @@ export async function getServerSideProps(context: any) {
                     titlePhoto: json["titlePhoto"] || null,
                 };
                 // workspace
-                let tagDict={}, ratingDict={}
+                const submissionsResponse = await fetch(`https://codeforces.com/api/user.status?handle=${cfhandle}`)
+                json = await submissionsResponse.json()
+                let problemsList : any[] = []
+                json.result?.forEach((problem : any)=>{
+                    const prob = {
+                        id : problem.id || null,
+                        contestId : problem.contestId || null,
+                        creationTimeSeconds: problem.creationTimeSeconds || null,
+                        relativeTimeSeconds: problem.relativeTimeSeconds || null,
+                        index : problem.problem?.index || null,
+                        name : problem.problem?.name || null,
+                        type : problem.problem?.type || null,
+                        rating : problem.problem?.rating || null,
+                        tags : problem.problem?.tags || [],
+                        participantType : problem.author?.participantType || null,
+                        ghost : problem.author?.ghost || null,
+                        startTimeSeconds : problem.author?.startTimeSeconds || null,
+                        programmingLanguage: problem.programmingLanguage || null,
+                        verdict: problem.verdict || null,
+                        testset: problem.testset || null,
+                        passedTestCount: problem.passedTestCount || null,
+                        timeConsumedMillis: problem.timeConsumedMillis || null,
+                        memoryConsumedBytes: problem.memoryConsumedBytes || null
+                    }
+                    if(prob.verdict==='OK' && !problemsList.some((problem : any) : boolean =>{
+                        return problem.contestId===prob.contestId && problem.name===prob.name && problem.verdict==='OK';
+                    })){
+                        problemsList.push(prob)
+                    }
+                })
+                let tagDict = tagsDictBuilder(problemsList), ratingDict=ratingDictBuilder(problemsList)
                 
                 return {
                     props: {
