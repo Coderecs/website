@@ -1,68 +1,33 @@
+import { useEffect, useState } from "react";
 import { Question } from "../../typings/Question";
 import Tile from "./Tile";
 function Dashboard() {
-    const questions = [
-        {
-            problem: "Problem name",
-            contest: "Contest Id",
-            link: "https://codeforces.com/",
-        },
-        {
-            problem: "Problem name",
-            contest: "Contest Id",
-            link: "https://codeforces.com/",
-        },
-        {
-            problem: "Problem name",
-            contest: "Contest Id",
-            link: "https://codeforces.com/",
-        },
-        {
-            problem: "Problem name",
-            contest: "Contest Id",
-            link: "https://codeforces.com/",
-        },
-        {
-            problem: "Problem name",
-            contest: "Contest Id",
-            link: "https://codeforces.com/",
-        },
-        {
-            problem: "Problem name",
-            contest: "Contest Id",
-            link: "https://codeforces.com/",
-        },
-        {
-            problem: "Problem name",
-            contest: "Contest Id",
-            link: "https://codeforces.com/",
-        },
-        {
-            problem: "Problem name",
-            contest: "Contest Id",
-            link: "https://codeforces.com/",
-        },
-        {
-            problem: "Problem name",
-            contest: "Contest Id",
-            link: "https://codeforces.com/",
-        },
-        {
-            problem: "Problem name",
-            contest: "Contest Id",
-            link: "https://codeforces.com/",
-        },
-        {
-            problem: "Problem name",
-            contest: "Contest Id",
-            link: "https://codeforces.com/",
-        },
-        {
-            problem: "Problem name",
-            contest: "Contest Id",
-            link: "https://codeforces.com/",
-        },
-    ];
+    const [questions, setQuestions] = useState<Question[]>([]);
+
+    const getData = async () => {
+        const res = await fetch("/data/data.json");
+        const json = await res.json();
+
+        const ques = json["questions"].map((question: any) => {
+            const ans = {
+                problem: question.name,
+                contestId: question.contestId,
+                link: `https://codeforces.com/problemset/problem/${question.contestId}/${question.index}`,
+            };
+            return ans;
+        });
+        const Ques = [];
+        for (let i = 0; i < 12; i++) {
+            Ques.push(ques[Math.floor(Math.random() * 2000)]);
+        }
+
+        setQuestions(Ques);
+    };
+
+    useEffect(() => {
+        getData();
+    }, []);
+
     return (
         <div className="w-full h-full relative overflow-scroll scrollbar-hide before:h-[300px] before:bg-primary before:content-[''] before:w-full before:absolute before:top-0 before:left-0 before:-z-10">
             <div className="absolute top-10 right-0 -z-[5] h-60">
