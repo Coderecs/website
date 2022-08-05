@@ -120,7 +120,7 @@ export async function getServerSideProps(context: any) {
                 // workspace
                 const submissionsResponse = await fetch(`https://codeforces.com/api/user.status?handle=${cfhandle}`);
                 json = await submissionsResponse.json();
-                json.result?.reverse()
+                json.result?.reverse();
                 let problemsList : any[] = [];
                 json.result?.forEach((problem : any)=>{
                     const prob = {
