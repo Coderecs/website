@@ -118,9 +118,10 @@ export async function getServerSideProps(context: any) {
                     titlePhoto: json["titlePhoto"] || null,
                 };
                 // workspace
-                const submissionsResponse = await fetch(`https://codeforces.com/api/user.status?handle=${cfhandle}`)
-                json = await submissionsResponse.json()
-                let problemsList : any[] = []
+                const submissionsResponse = await fetch(`https://codeforces.com/api/user.status?handle=${cfhandle}`);
+                json = await submissionsResponse.json();
+                json.result?.reverse()
+                let problemsList : any[] = [];
                 json.result?.forEach((problem : any)=>{
                     const prob = {
                         id : problem.id || null,
@@ -141,14 +142,14 @@ export async function getServerSideProps(context: any) {
                         passedTestCount: problem.passedTestCount || null,
                         timeConsumedMillis: problem.timeConsumedMillis || null,
                         memoryConsumedBytes: problem.memoryConsumedBytes || null
-                    }
+                    };
                     if(prob.verdict==='OK' && !problemsList.some((problem : any) : boolean =>{
                         return problem.contestId===prob.contestId && problem.name===prob.name && problem.verdict==='OK';
                     })){
-                        problemsList.push(prob)
+                        problemsList.push(prob);
                     }
-                })
-                let tagDict = tagsDictBuilder(problemsList), ratingDict=ratingDictBuilder(problemsList)
+                });
+                let tagDict = tagsDictBuilder(problemsList), ratingDict=ratingDictBuilder(problemsList);
                 
                 return {
                     props: {
