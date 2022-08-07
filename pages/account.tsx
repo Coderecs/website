@@ -59,7 +59,7 @@ function account({ loggedIn, cfhandle, user, ratingDict, tagDict }: any) {
                     <h1 className="text-4xl font-poppins font-bold">
                         Hey {user.firstName}!
                     </h1>
-                    <h2 className="font-poppins font-light">Welcome Back!</h2>
+                    <h2 className="font-poppins">Welcome Back!</h2>
 
                     <div className="w-full flex  justify-around items-center h-2/5">
                         <div className="py-5 space-y-4 text-lg font-poppins italic">

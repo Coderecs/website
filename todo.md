@@ -1,0 +1,1 @@
+### put a loading animation after click
