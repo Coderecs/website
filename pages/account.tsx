@@ -76,7 +76,7 @@ function account({ loggedIn, cfhandle, user, ratingDict, tagDict, totalSubmissio
                             {/* correct count of attempted problems should be higher, some issue here */}
 
                             <p>Total Submissions: {totalSubmissions}</p>
-                            <p>Unsolved Problems: {UniqueProblemCount - accumulate()}</p>v 
+                            <p>Unsolved Problems: {UniqueProblemCount - accumulate()}</p>
                             <p>Number of contests: {ContestCount}</p> 
                             {/* not the number of contests taken part in
                             dis is the number of contests from which the user has attempted atleast 1 question */}
