@@ -6,7 +6,21 @@ const ratingDictBuilder = (problemList : any[]) : any => {
         else
             ratingDict[problem.rating] = [problem];
     })
-    return ratingDict;
+    let list = [];
+    let mx = 1;
+    for(let i = 800; i <= 3500; i += 100){
+        if(! ratingDict[i]) list.push(0);
+
+        else{
+            list.push(ratingDict[i].length);
+            mx = Math.max(mx, ratingDict[i].length);
+        }
+    }
+    for(let i = 0; i < list.length; i++){
+        list[i] *= 100;
+        list[i] /= mx;
+    }
+    return list;
 }
 
 const tagsDictBuilder = (problemList : any) : any => {

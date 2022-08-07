@@ -4,7 +4,7 @@ import Head from "next/head";
 import Image from "next/image";
 import Layout from "../components/Layout/Layout";
 import { db } from "../serverless/firebase";
-import {ratingDictBuilder, tagsDictBuilder} from "../lib/userDetails";
+// import {ratingDictBuilder, tagsDictBuilder} from "../lib/userDetails";
 
 function account({ loggedIn, cfhandle, user, ratingDict, tagDict }: any) {
     return (
@@ -132,7 +132,7 @@ export async function getServerSideProps(context: any) {
                         name : problem.problem?.name || null,
                         type : problem.problem?.type || null,
                         rating : problem.problem?.rating || null,
-                        tags : problem.problem?.tags || [],
+                        tags : problem.problem?.tags || ["yet to be decided"],
                         participantType : problem.author?.participantType || null,
                         ghost : problem.author?.ghost || null,
                         startTimeSeconds : problem.author?.startTimeSeconds || null,
@@ -149,8 +149,28 @@ export async function getServerSideProps(context: any) {
                         problemsList.push(prob);
                     }
                 });
-                let tagDict = tagsDictBuilder(problemsList), ratingDict=ratingDictBuilder(problemsList);
-                
+
+                // let tagDict = tagsDictBuilder(problemsList), ratingDict=ratingDictBuilder(problemsList);
+                let ratingDict : any = [];
+                for(let i = 0; i < 35 - 8 + 1; i++) ratingDict.push(0);
+
+                let tagDict : any = {};
+                let mx = 0;
+                problemsList.forEach((problem : any)=>{
+                    if(problem.rating != null){
+                        ratingDict[(problem.rating - 800) / 100]++;
+
+                        mx = Math.max(mx, ratingDict[(problem.rating - 800) / 100]);
+                    }
+                    problem.tags.forEach((tag : string)=>{
+                        if(! tagDict[tag])
+                            tagDict[tag] = 1;
+                        else
+                            tagDict[tag]++;
+                    })
+                })
+                console.log(tagDict);
+                console.log(ratingDict);
                 return {
                     props: {
                         user,
