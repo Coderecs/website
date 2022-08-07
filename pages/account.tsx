@@ -6,7 +6,7 @@ import Layout from "../components/Layout/Layout";
 import { db } from "../serverless/firebase";
 // import {ratingDictBuilder, tagsDictBuilder} from "../lib/userDetails";
 
-function account({ loggedIn, cfhandle, user, ratingDict, tagDict, totalSubmissions }: any) {
+function account({ loggedIn, cfhandle, user, ratingDict, tagDict, totalSubmissions, UniqueProblemCount, ContestCount }: any) {
     let accumulate = ()=>{
         let tot = 0;
         for(let i = 0; i < ratingDict.length; i++){
@@ -71,10 +71,15 @@ function account({ loggedIn, cfhandle, user, ratingDict, tagDict, totalSubmissio
                     <div className="w-full flex  justify-around items-center h-2/5">
                         <div className="py-5 space-y-4 text-lg font-poppins italic">
                             <p>Problems Solved : {accumulate()}</p>
-                            <p>Problems Attempted: todo</p>
+                            {/* dis is correct */}
+                            <p>Problems Attempted: {UniqueProblemCount}</p>
+                            {/* correct count of attempted problems should be higher, some issue here */}
+
                             <p>Total Submissions: {totalSubmissions}</p>
-                            <p>Unsolved Problems: todo</p>
-                            <p>Number of contests: todo</p>
+                            <p>Unsolved Problems: {UniqueProblemCount - accumulate()}</p>v 
+                            <p>Number of contests: {ContestCount}</p> 
+                            {/* not the number of contests taken part in
+                            dis is the number of contests from which the user has attempted atleast 1 question */}
                         </div>
                         <div className="w-1/4 h-full grid place-items-center">
                             <div className="h-[200px] w-[200px] bg-primary rounded-full text-white flex items-center justify-center">
@@ -130,6 +135,10 @@ export async function getServerSideProps(context: any) {
                 json = await submissionsResponse.json();
                 json.result?.reverse();
                 let problemsList : any[] = [];
+
+                let UniqueProblemCount = 0;
+                let ContestCount = 0;
+
                 json.result?.forEach((problem : any)=>{
                     const prob = {
                         id : problem.id || null,
@@ -156,9 +165,20 @@ export async function getServerSideProps(context: any) {
                     })){
                         problemsList.push(prob);
                     }
+                    if(!problemsList.some((problem : any) : boolean =>{
+                        return problem.contestId===prob.contestId && problem.name===prob.name;
+                    })){
+                        UniqueProblemCount++;
+                    }
+                    // something wrong with UniqueProblemCount
+                    // expected value should be much higher than the current value 
+                    if(!problemsList.some((problem : any) : boolean =>{
+                        return problem.contestId===prob.contestId;
+                    })){
+                        ContestCount++;
+                    }
                 });
 
-                // let tagDict = tagsDictBuilder(problemsList), ratingDict=ratingDictBuilder(problemsList);
                 let ratingDict : any = [];
                 for(let i = 0; i < 35 - 8 + 1; i++) ratingDict.push(0);
 
@@ -178,8 +198,6 @@ export async function getServerSideProps(context: any) {
                     })
                 })
                 let totalSubmissions = json.result?.length;
-                // console.log(tagDict);
-                // console.log(ratingDict);
                 return {
                     props: {
                         user,
@@ -187,6 +205,8 @@ export async function getServerSideProps(context: any) {
                         tagDict,
                         ratingDict,
                         totalSubmissions,
+                        UniqueProblemCount,
+                        ContestCount,
                     },
                 };
             } else {
