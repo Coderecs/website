@@ -6,7 +6,14 @@ import Layout from "../components/Layout/Layout";
 import { db } from "../serverless/firebase";
 // import {ratingDictBuilder, tagsDictBuilder} from "../lib/userDetails";
 
-function account({ loggedIn, cfhandle, user, ratingDict, tagDict }: any) {
+function account({ loggedIn, cfhandle, user, ratingDict, tagDict, totalSubmissions }: any) {
+    let accumulate = ()=>{
+        let tot = 0;
+        for(let i = 0; i < ratingDict.length; i++){
+            tot += ratingDict[i];
+        }
+        return tot;
+    }
     return (
         <Layout>
             <div className="w-full h-full flex flex-col lg:flex-row overflow-y-scroll scrollbar-hide pb-10">
@@ -63,10 +70,11 @@ function account({ loggedIn, cfhandle, user, ratingDict, tagDict }: any) {
 
                     <div className="w-full flex  justify-around items-center h-2/5">
                         <div className="py-5 space-y-4 text-lg font-poppins italic">
-                            <p>Problems Solved : 69</p>
-                            <p>Problems Attempted: 72</p>
-                            <p>Unsolved Problems: 3</p>
-                            <p>Number of contests: 12</p>
+                            <p>Problems Solved : {accumulate()}</p>
+                            <p>Problems Attempted: todo</p>
+                            <p>Total Submissions: {totalSubmissions}</p>
+                            <p>Unsolved Problems: todo</p>
+                            <p>Number of contests: todo</p>
                         </div>
                         <div className="w-1/4 h-full grid place-items-center">
                             <div className="h-[200px] w-[200px] bg-primary rounded-full text-white flex items-center justify-center">
@@ -169,14 +177,16 @@ export async function getServerSideProps(context: any) {
                             tagDict[tag]++;
                     })
                 })
-                console.log(tagDict);
-                console.log(ratingDict);
+                let totalSubmissions = json.result?.length;
+                // console.log(tagDict);
+                // console.log(ratingDict);
                 return {
                     props: {
                         user,
                         cfhandle,
                         tagDict,
-                        ratingDict
+                        ratingDict,
+                        totalSubmissions,
                     },
                 };
             } else {
