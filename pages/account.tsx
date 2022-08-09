@@ -49,7 +49,7 @@ function account({ loggedIn, cfhandle, user, ratingDict, tagDict, totalSubmissio
                                 ({user.maxRank})
                             </p>
 
-                            <h2 className="text-2xl font-bold underline mt-10">
+                            <h2 className="text-2xl font-bold mt-10">
                                 Personal Details
                             </h2>
                             <p>
@@ -58,6 +58,9 @@ function account({ loggedIn, cfhandle, user, ratingDict, tagDict, totalSubmissio
                             <p>{user.email}</p>
                             <p>
                                 {user.city}, {user.country}
+                            </p>
+                            <p>
+                                from <span className="font-bold">{user.organization}</span>
                             </p>
                         </div>
                     </div>
@@ -129,6 +132,7 @@ export async function getServerSideProps(context: any) {
                     maxRank: json["maxRank"] || null,
                     maxRating: json["maxRating"] || null,
                     titlePhoto: json["titlePhoto"] || null,
+                    organization: json["organization"] || null,
                 };
                 // workspace
                 const submissionsResponse = await fetch(`https://codeforces.com/api/user.status?handle=${cfhandle}`);
