@@ -6,14 +6,23 @@ import Layout from "../components/Layout/Layout";
 import { db } from "../serverless/firebase";
 // import {ratingDictBuilder, tagsDictBuilder} from "../lib/userDetails";
 
-function account({ loggedIn, cfhandle, user, ratingDict, tagDict, totalSubmissions, UniqueProblemCount, ContestCount }: any) {
-    let accumulate = ()=>{
+function account({
+    loggedIn,
+    cfhandle,
+    user,
+    ratingDict,
+    tagDict,
+    totalSubmissions,
+    UniqueProblemCount,
+    ContestCount,
+}: any) {
+    let accumulate = () => {
         let tot = 0;
-        for(let i = 0; i < ratingDict.length; i++){
+        for (let i = 0; i < ratingDict.length; i++) {
             tot += ratingDict[i];
         }
         return tot;
-    }
+    };
     return (
         <Layout>
             <div className="w-full h-full flex flex-col lg:flex-row overflow-y-scroll scrollbar-hide pb-10">
@@ -76,8 +85,11 @@ function account({ loggedIn, cfhandle, user, ratingDict, tagDict, totalSubmissio
                             {/* correct count of attempted problems should be higher, some issue here */}
 
                             <p>Total Submissions: {totalSubmissions}</p>
-                            <p>Unsolved Problems: {UniqueProblemCount - accumulate()}</p>
-                            <p>Number of contests: {ContestCount}</p> 
+                            <p>
+                                Unsolved Problems:{" "}
+                                {UniqueProblemCount - accumulate()}
+                            </p>
+                            <p>Number of contests: {ContestCount}</p>
                             {/* not the number of contests taken part in
                             dis is the number of contests from which the user has attempted atleast 1 question */}
                         </div>
@@ -89,8 +101,12 @@ function account({ loggedIn, cfhandle, user, ratingDict, tagDict, totalSubmissio
                     </div>
 
                     <div className="w-full h-3/5 flex flex-col md:flex-row space-x-4 items-center justify-evenly">
-                        <div className="h-[90%] w-full md:w-1/2 bg-blue-100 grid place-items-center">Rating of problems</div>
-                        <div className="h-[300px] w-[300px] rounded-full bg-blue-100 grid place-items-center">Topics</div>
+                        <div className="h-[90%] w-full md:w-1/2 bg-blue-100 grid place-items-center">
+                            Rating of problems
+                        </div>
+                        <div className="h-[300px] w-[300px] rounded-full bg-blue-100 grid place-items-center">
+                            Topics
+                        </div>
                     </div>
                 </div>
             </div>
@@ -131,72 +147,95 @@ export async function getServerSideProps(context: any) {
                     titlePhoto: json["titlePhoto"] || null,
                 };
                 // workspace
-                const submissionsResponse = await fetch(`https://codeforces.com/api/user.status?handle=${cfhandle}`);
+                const submissionsResponse = await fetch(
+                    `https://codeforces.com/api/user.status?handle=${cfhandle}`
+                );
                 json = await submissionsResponse.json();
                 json.result?.reverse();
-                let problemsList : any[] = [];
+                let problemsList: any[] = [];
 
                 let UniqueProblemCount = 0;
                 let ContestCount = 0;
 
-                json.result?.forEach((problem : any)=>{
+                json.result?.forEach((problem: any) => {
                     const prob = {
-                        id : problem.id || null,
-                        contestId : problem.contestId || null,
-                        creationTimeSeconds: problem.creationTimeSeconds || null,
-                        relativeTimeSeconds: problem.relativeTimeSeconds || null,
-                        index : problem.problem?.index || null,
-                        name : problem.problem?.name || null,
-                        type : problem.problem?.type || null,
-                        rating : problem.problem?.rating || null,
-                        tags : problem.problem?.tags || ["yet to be decided"],
-                        participantType : problem.author?.participantType || null,
-                        ghost : problem.author?.ghost || null,
-                        startTimeSeconds : problem.author?.startTimeSeconds || null,
-                        programmingLanguage: problem.programmingLanguage || null,
+                        id: problem.id || null,
+                        contestId: problem.contestId || null,
+                        creationTimeSeconds:
+                            problem.creationTimeSeconds || null,
+                        relativeTimeSeconds:
+                            problem.relativeTimeSeconds || null,
+                        index: problem.problem?.index || null,
+                        name: problem.problem?.name || null,
+                        type: problem.problem?.type || null,
+                        rating: problem.problem?.rating || null,
+                        tags: problem.problem?.tags || ["yet to be decided"],
+                        participantType:
+                            problem.author?.participantType || null,
+                        ghost: problem.author?.ghost || null,
+                        startTimeSeconds:
+                            problem.author?.startTimeSeconds || null,
+                        programmingLanguage:
+                            problem.programmingLanguage || null,
                         verdict: problem.verdict || null,
                         testset: problem.testset || null,
                         passedTestCount: problem.passedTestCount || null,
                         timeConsumedMillis: problem.timeConsumedMillis || null,
-                        memoryConsumedBytes: problem.memoryConsumedBytes || null
+                        memoryConsumedBytes:
+                            problem.memoryConsumedBytes || null,
                     };
-                    if(prob.verdict==='OK' && !problemsList.some((problem : any) : boolean =>{
-                        return problem.contestId===prob.contestId && problem.name===prob.name && problem.verdict==='OK';
-                    })){
+                    if (
+                        prob.verdict === "OK" &&
+                        !problemsList.some((problem: any): boolean => {
+                            return (
+                                problem.contestId === prob.contestId &&
+                                problem.name === prob.name &&
+                                problem.verdict === "OK"
+                            );
+                        })
+                    ) {
                         problemsList.push(prob);
                     }
-                    if(!problemsList.some((problem : any) : boolean =>{
-                        return problem.contestId===prob.contestId && problem.name===prob.name;
-                    })){
+                    if (
+                        !problemsList.some((problem: any): boolean => {
+                            return (
+                                problem.contestId === prob.contestId &&
+                                problem.name === prob.name
+                            );
+                        })
+                    ) {
                         UniqueProblemCount++;
                     }
                     // something wrong with UniqueProblemCount
-                    // expected value should be much higher than the current value 
-                    if(!problemsList.some((problem : any) : boolean =>{
-                        return problem.contestId===prob.contestId;
-                    })){
+                    // expected value should be much higher than the current value
+                    if (
+                        !problemsList.some((problem: any): boolean => {
+                            return problem.contestId === prob.contestId;
+                        })
+                    ) {
                         ContestCount++;
                     }
                 });
 
-                let ratingDict : any = [];
-                for(let i = 0; i < 35 - 8 + 1; i++) ratingDict.push(0);
+                let ratingDict: any = [];
+                for (let i = 0; i < 35 - 8 + 1; i++) ratingDict.push(0);
 
-                let tagDict : any = {};
+                let tagDict: any = {};
                 let mx = 0;
-                problemsList.forEach((problem : any)=>{
-                    if(problem.rating != null){
+                problemsList.forEach((problem: any) => {
+                    if (problem.rating != null) {
                         ratingDict[(problem.rating - 800) / 100]++;
 
-                        mx = Math.max(mx, ratingDict[(problem.rating - 800) / 100]);
+                        mx = Math.max(
+                            mx,
+                            ratingDict[(problem.rating - 800) / 100]
+                        );
                     }
-                    problem.tags.forEach((tag : string)=>{
-                        if(! tagDict[tag])
-                            tagDict[tag] = 1;
-                        else
-                            tagDict[tag]++;
-                    })
-                })
+                    problem.tags.forEach((tag: string) => {
+                        if (!tagDict[tag]) tagDict[tag] = 1;
+                        else tagDict[tag]++;
+                    });
+                });
                 let totalSubmissions = json.result?.length;
                 return {
                     props: {
