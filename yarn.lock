@@ -583,6 +583,13 @@
   dependencies:
     tslib "^2.4.0"
 
+"@types/faker@^6.6.9":
+  version "6.6.9"
+  resolved "https://registry.yarnpkg.com/@types/faker/-/faker-6.6.9.tgz#1064e7c46be58388fa326e2f918a4f02ab740a7a"
+  integrity sha512-Y9YYm5L//8ooiiknO++4Gr539zzdI0j3aXnOBjo1Vk+kTvffY10GuE2wn78AFPECwZ5MYGTjiDVw1naLLdDimw==
+  dependencies:
+    faker "*"
+
 "@types/long@^4.0.1":
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/@types/long/-/long-4.0.2.tgz#b74129719fc8d11c01868010082d483b7545591a"
@@ -742,6 +749,11 @@ chart.js@^2.9.4:
     chartjs-color "^2.1.0"
     moment "^2.10.2"
 
+chart.js@^3.9.1:
+  version "3.9.1"
+  resolved "https://registry.yarnpkg.com/chart.js/-/chart.js-3.9.1.tgz#3abf2c775169c4c71217a107163ac708515924b8"
+  integrity sha512-Ro2JbLmvg83gXF5F4sniaQ+lTbSv18E+TIf2cOeiH1Iqd2PGFOtem+DUufMZsCJwFE7ywPOpfXFBwRTGq7dh6w==
+
 chartjs-color-string@^0.6.0:
   version "0.6.0"
   resolved "https://registry.yarnpkg.com/chartjs-color-string/-/chartjs-color-string-0.6.0.tgz#1df096621c0e70720a64f4135ea171d051402f71"
@@ -895,6 +907,11 @@ escalade@^3.1.1:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/escalade/-/escalade-3.1.1.tgz#d8cfdc7000965c5a0174b4a82eaa5c0552742e40"
   integrity sha512-k0er2gUkLf8O0zKJiAhmkTnJlTvINGv7ygDNPbeIsX/TJjGJZHuh9B2UxbsaEkmlEo9MfhrSzmhIlhRlI2GXnw==
+
+faker@*, faker@^6.6.6:
+  version "6.6.6"
+  resolved "https://registry.yarnpkg.com/faker/-/faker-6.6.6.tgz#e9529da0109dca4c7c5dbfeaadbd9234af943033"
+  integrity sha512-9tCqYEDHI5RYFQigXFwF1hnCwcWCOJl/hmll0lr5D2Ljjb0o4wphb69wikeJDz5qCEzXCoPvG6ss5SDP6IfOdg==
 
 fast-glob@^3.2.11:
   version "3.2.11"
@@ -1451,6 +1468,11 @@ quick-lru@^5.1.1:
   version "5.1.1"
   resolved "https://registry.yarnpkg.com/quick-lru/-/quick-lru-5.1.1.tgz#366493e6b3e42a3a6885e2e99d18f80fb7a8c932"
   integrity sha512-WuyALRjWPDGtt/wzJiadO5AXY+8hZ80hVpe6MyivgraREW751X3SbhRvG3eLKOYN+8VEvqLcf3wdnt44Z4S4SA==
+
+react-chartjs-2@^4.3.1:
+  version "4.3.1"
+  resolved "https://registry.yarnpkg.com/react-chartjs-2/-/react-chartjs-2-4.3.1.tgz#9941e7397fb963f28bb557addb401e9ff96c6681"
+  integrity sha512-5i3mjP6tU7QSn0jvb8I4hudTzHJqS8l00ORJnVwI2sYu0ihpj83Lv2YzfxunfxTZkscKvZu2F2w9LkwNBhj6xA==
 
 react-dom@18.1.0:
   version "18.1.0"

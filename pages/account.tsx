@@ -3,8 +3,8 @@ import { getSession } from "next-auth/react";
 import Head from "next/head";
 import Image from "next/image";
 import Layout from "../components/Layout/Layout";
+import RatingsChart from "../components/Profile/RatingsChart";
 import { db } from "../serverless/firebase";
-// import {ratingDictBuilder, tagsDictBuilder} from "../lib/userDetails";
 
 function account({
     ACsubmissions,
@@ -17,7 +17,6 @@ function account({
     UniqueProblemCount,
     ContestCount,
 }: any) {
-    console.log(tagDict);
     return (
         <Layout>
             <div className="w-full h-full flex flex-col lg:flex-row overflow-y-scroll scrollbar-hide pb-10">
@@ -64,7 +63,10 @@ function account({
                                 {user.city}, {user.country}
                             </p>
                             <p>
-                                from <span className="font-bold">{user.organization}</span>
+                                from{" "}
+                                <span className="font-bold">
+                                    {user.organization}
+                                </span>
                             </p>
                         </div>
                     </div>
@@ -97,14 +99,8 @@ function account({
                             </div>
                         </div>
                     </div>
-
-                    <div className="w-full h-3/5 flex flex-col md:flex-row space-x-4 items-center justify-evenly">
-                        <div className="h-[90%] w-full md:w-1/2 bg-blue-100 grid place-items-center">
-                            Rating of problems
-                        </div>
-                        <div className="h-[300px] w-[300px] rounded-full bg-blue-100 grid place-items-center">
-                            Topics
-                        </div>
+                    <div className="w-full bg-primary pb-32 px-12 rounded-xl">
+                        <RatingsChart ratings={ratingDict} />
                     </div>
                 </div>
             </div>
@@ -196,15 +192,14 @@ export async function getServerSideProps(context: any) {
                     ) {
                         problemsList.push(prob);
                     }
-                    
+
                     let Contest = prob.contestId;
                     let Index = prob.index;
 
-                    // let HASH = Contest.toString() + Index; 
+                    // let HASH = Contest.toString() + Index;
                     let HASH = Index + Contest;
-                    
-                    SET.add(HASH);
 
+                    SET.add(HASH);
                 });
 
                 let ratingDict: any = [];
@@ -227,14 +222,16 @@ export async function getServerSideProps(context: any) {
                         else tagDict[tag]++;
                     });
                 });
-                for(let i = 0; i < 35 - 8 + 1; i++){
-                    ratingDict[i] /= mx; ratingDict[i] *= 100;
+
+                for(let i=35-8; i>=0; i--) {
+                    if(ratingDict[i]==0) ratingDict.pop();
+                    else break;
                 }
 
                 UniqueProblemCount = SET.size;
 
                 let totalSubmissions = json.result?.length;
-                
+
                 return {
                     props: {
                         user,
@@ -244,7 +241,7 @@ export async function getServerSideProps(context: any) {
                         totalSubmissions,
                         UniqueProblemCount,
                         ContestCount,
-                        ACsubmissions
+                        ACsubmissions,
                     },
                 };
             } else {
