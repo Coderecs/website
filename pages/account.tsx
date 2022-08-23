@@ -23,6 +23,7 @@ function account({
         }
         return tot;
     };
+    console.log(ratingDict);
     return (
         <Layout>
             <div className="w-full h-full flex flex-col lg:flex-row overflow-y-scroll scrollbar-hide pb-10">
@@ -92,7 +93,7 @@ function account({
                                 Unsolved Problems:{" "}
                                 {UniqueProblemCount - accumulate()}
                             </p>
-                            <p>Number of contests: {ContestCount}</p>
+                            {/* <p>Number of contests: {ContestCount}</p> */}
                             {/* not the number of contests taken part in
                             dis is the number of contests from which the user has attempted atleast 1 question */}
                         </div>
@@ -160,6 +161,7 @@ export async function getServerSideProps(context: any) {
 
                 let UniqueProblemCount = 0;
                 let ContestCount = 0;
+                let SET = new Set(); // unique problems irrespective of their verdict
 
                 json.result?.forEach((problem: any) => {
                     const prob = {
@@ -200,25 +202,15 @@ export async function getServerSideProps(context: any) {
                     ) {
                         problemsList.push(prob);
                     }
-                    if (
-                        !problemsList.some((problem: any): boolean => {
-                            return (
-                                problem.contestId === prob.contestId &&
-                                problem.name === prob.name
-                            );
-                        })
-                    ) {
-                        UniqueProblemCount++;
-                    }
-                    // something wrong with UniqueProblemCount
-                    // expected value should be much higher than the current value
-                    if (
-                        !problemsList.some((problem: any): boolean => {
-                            return problem.contestId === prob.contestId;
-                        })
-                    ) {
-                        ContestCount++;
-                    }
+                    
+                    let Contest = prob.contestId;
+                    let Index = prob.index;
+
+                    // let HASH = Contest.toString() + Index; 
+                    let HASH = Index + Contest;
+                    
+                    SET.add(HASH);
+
                 });
 
                 let ratingDict: any = [];
@@ -240,7 +232,10 @@ export async function getServerSideProps(context: any) {
                         else tagDict[tag]++;
                     });
                 });
+                UniqueProblemCount = SET.size;
+
                 let totalSubmissions = json.result?.length;
+                
                 return {
                     props: {
                         user,
