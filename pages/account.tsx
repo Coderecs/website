@@ -7,6 +7,7 @@ import { db } from "../serverless/firebase";
 // import {ratingDictBuilder, tagsDictBuilder} from "../lib/userDetails";
 
 function account({
+    ACsubmissions,
     loggedIn,
     cfhandle,
     user,
@@ -16,14 +17,7 @@ function account({
     UniqueProblemCount,
     ContestCount,
 }: any) {
-    let accumulate = () => {
-        let tot = 0;
-        for (let i = 0; i < ratingDict.length; i++) {
-            tot += ratingDict[i];
-        }
-        return tot;
-    };
-    console.log(ratingDict);
+    
     return (
         <Layout>
             <div className="w-full h-full flex flex-col lg:flex-row overflow-y-scroll scrollbar-hide pb-10">
@@ -83,7 +77,7 @@ function account({
 
                     <div className="w-full flex  justify-around items-center h-2/5">
                         <div className="py-5 space-y-4 text-lg font-poppins italic">
-                            <p>Problems Solved : {accumulate()}</p>
+                            <p>Problems Solved : {ACsubmissions}</p>
                             {/* dis is correct */}
                             <p>Problems Attempted: {UniqueProblemCount}</p>
                             {/* correct count of attempted problems should be higher, some issue here */}
@@ -91,7 +85,7 @@ function account({
                             <p>Total Submissions: {totalSubmissions}</p>
                             <p>
                                 Unsolved Problems:{" "}
-                                {UniqueProblemCount - accumulate()}
+                                {UniqueProblemCount - ACsubmissions}
                             </p>
                             {/* <p>Number of contests: {ContestCount}</p> */}
                             {/* not the number of contests taken part in
@@ -218,10 +212,11 @@ export async function getServerSideProps(context: any) {
 
                 let tagDict: any = {};
                 let mx = 0;
+                let ACsubmissions = 0;
                 problemsList.forEach((problem: any) => {
                     if (problem.rating != null) {
                         ratingDict[(problem.rating - 800) / 100]++;
-
+                        ACsubmissions++;
                         mx = Math.max(
                             mx,
                             ratingDict[(problem.rating - 800) / 100]
@@ -232,6 +227,10 @@ export async function getServerSideProps(context: any) {
                         else tagDict[tag]++;
                     });
                 });
+                for(let i = 0; i < 35 - 8 + 1; i++){
+                    ratingDict[i] /= mx; ratingDict[i] *= 100;
+                }
+
                 UniqueProblemCount = SET.size;
 
                 let totalSubmissions = json.result?.length;
@@ -245,6 +244,7 @@ export async function getServerSideProps(context: any) {
                         totalSubmissions,
                         UniqueProblemCount,
                         ContestCount,
+                        ACsubmissions
                     },
                 };
             } else {

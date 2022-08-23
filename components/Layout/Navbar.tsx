@@ -21,11 +21,11 @@ export default function NavBar() {
                 ) : (
                     <>
                         <Link href={"/account"}>
-                            <Image
+                            <img
                                 src={session.user?.image!}
                                 alt={session.user?.name!}
-                                height={50}
-                                width={50}
+                                // height={50}
+                                // width={50}
                                 className="h-[50px] w-[50px] rounded-full object-contain cursor-pointer"
                             />
                         </Link>
