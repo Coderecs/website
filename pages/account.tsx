@@ -4,6 +4,7 @@ import Head from "next/head";
 import Image from "next/image";
 import Layout from "../components/Layout/Layout";
 import RatingsChart from "../components/Profile/RatingsChart";
+import TagsChart from "../components/Profile/TagsChart";
 import { db } from "../serverless/firebase";
 
 function account({
@@ -80,27 +81,20 @@ function account({
                     <div className="w-full flex  justify-around items-center h-2/5">
                         <div className="py-5 space-y-4 text-lg font-poppins italic">
                             <p>Problems Solved : {ACsubmissions}</p>
-                            {/* dis is correct */}
                             <p>Problems Attempted: {UniqueProblemCount}</p>
-                            {/* correct count of attempted problems should be higher, some issue here */}
-
                             <p>Total Submissions: {totalSubmissions}</p>
                             <p>
                                 Unsolved Problems:{" "}
                                 {UniqueProblemCount - ACsubmissions}
                             </p>
-                            {/* <p>Number of contests: {ContestCount}</p> */}
-                            {/* not the number of contests taken part in
-                            dis is the number of contests from which the user has attempted atleast 1 question */}
                         </div>
-                        <div className="w-1/4 h-full grid place-items-center">
-                            <div className="h-[200px] w-[200px] bg-primary rounded-full text-white flex items-center justify-center">
-                                pie chart of problems
-                            </div>
-                        </div>
+                        <p className="font-poppins">Scroll down to get your insights</p>
                     </div>
                     <div className="w-full bg-primary pb-32 px-12 rounded-xl">
                         <RatingsChart ratings={ratingDict} />
+                    </div>
+                    <div className="w-full">
+                        <TagsChart tags={tagDict} />
                     </div>
                 </div>
             </div>
@@ -223,8 +217,8 @@ export async function getServerSideProps(context: any) {
                     });
                 });
 
-                for(let i=35-8; i>=0; i--) {
-                    if(ratingDict[i]==0) ratingDict.pop();
+                for (let i = 35 - 8; i >= 0; i--) {
+                    if (ratingDict[i] == 0) ratingDict.pop();
                     else break;
                 }
 
