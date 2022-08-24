@@ -3,24 +3,21 @@ import { getSession } from "next-auth/react";
 import Head from "next/head";
 import Image from "next/image";
 import Layout from "../components/Layout/Layout";
+import DailyActivityChart from "../components/Profile/DailyActivityChart";
 import RatingsChart from "../components/Profile/RatingsChart";
 import TagsChart from "../components/Profile/TagsChart";
 import { db } from "../serverless/firebase";
 
 function account({
     ACsubmissions,
-    loggedIn,
     cfhandle,
     user,
     ratingDict,
     tagDict,
     totalSubmissions,
     UniqueProblemCount,
-    ContestCount,
-    SerialMap
-    
+    SerialMap,
 }: any) {
-    let DATESubmissionMap = new Map(JSON.parse(SerialMap));
     return (
         <Layout>
             <div className="w-full h-full flex flex-col lg:flex-row overflow-y-scroll scrollbar-hide pb-10">
@@ -91,13 +88,20 @@ function account({
                                 {UniqueProblemCount - ACsubmissions}
                             </p>
                         </div>
-                        <p className="font-poppins">Scroll down to get your insights</p>
+                        <p className="font-poppins">
+                            Scroll down to get your insights
+                        </p>
                     </div>
-                    <div className="w-full bg-primary pb-32 px-12 rounded-xl">
-                        <RatingsChart ratings={ratingDict} />
-                    </div>
-                    <div className="w-[50%]">
-                        <TagsChart tags={tagDict} />
+                    <div className="w-full space-y-7">
+                        <div className="w-full bg-primary pb-32 px-12 rounded-xl">
+                            <DailyActivityChart activity={SerialMap} />
+                        </div>
+                        <div className="w-full bg-primary pb-32 px-12 rounded-xl">
+                            <RatingsChart ratings={ratingDict} />
+                        </div>
+                        <div className="w-[80%]">
+                            <TagsChart tags={tagDict} />
+                        </div>
                     </div>
                 </div>
             </div>
@@ -156,22 +160,28 @@ export async function getServerSideProps(context: any) {
                     const prob = {
                         id: problem.id || null,
                         contestId: problem.contestId || null,
-                        creationTimeSeconds: problem.creationTimeSeconds || null,
-                        relativeTimeSeconds: problem.relativeTimeSeconds || null,
+                        creationTimeSeconds:
+                            problem.creationTimeSeconds || null,
+                        relativeTimeSeconds:
+                            problem.relativeTimeSeconds || null,
                         index: problem.problem?.index || null,
                         name: problem.problem?.name || null,
                         type: problem.problem?.type || null,
                         rating: problem.problem?.rating || null,
                         tags: problem.problem?.tags || ["yet to be decided"],
-                        participantType: problem.author?.participantType || null,
+                        participantType:
+                            problem.author?.participantType || null,
                         ghost: problem.author?.ghost || null,
-                        startTimeSeconds: problem.author?.startTimeSeconds || null,
-                        programmingLanguage: problem.programmingLanguage || null,
+                        startTimeSeconds:
+                            problem.author?.startTimeSeconds || null,
+                        programmingLanguage:
+                            problem.programmingLanguage || null,
                         verdict: problem.verdict || null,
                         testset: problem.testset || null,
                         passedTestCount: problem.passedTestCount || null,
                         timeConsumedMillis: problem.timeConsumedMillis || null,
-                        memoryConsumedBytes: problem.memoryConsumedBytes || null,
+                        memoryConsumedBytes:
+                            problem.memoryConsumedBytes || null,
                     };
                     if (
                         prob.verdict === "OK" &&
@@ -200,19 +210,23 @@ export async function getServerSideProps(context: any) {
 
                     let year = date.getUTCFullYear();
                     let day = date.getDate();
-                    let month = date.getMonth();
+                    let month = date.getMonth() + 1;
 
-                    let dateString = String(day) + " / " + String(month) + " / " + String(year);
+                    let dateString =
+                        String(day) +
+                        " / " +
+                        String(month) +
+                        " / " +
+                        String(year);
 
-                    // console.log(dateString); // working fine
-
-                    if(LatestSubmissions.has(dateString)) LatestSubmissions.set(dateString, LatestSubmissions.get(dateString)! + 1);
-
+                    if (LatestSubmissions.has(dateString))
+                        LatestSubmissions.set(
+                            dateString,
+                            LatestSubmissions.get(dateString)! + 1
+                        );
                     else LatestSubmissions.set(dateString, 1);
-
-                    // console.log(LatestSubmissions); // working fine
                 });
-                
+
                 let ratingDict: any = [];
                 for (let i = 0; i < 35 - 8 + 1; i++) ratingDict.push(0);
 
@@ -243,11 +257,12 @@ export async function getServerSideProps(context: any) {
 
                 let totalSubmissions = json.result?.length;
                 // let LatestSubMap = JSON.stringify(LatestSubmissions);
-                let temp = Array.from(LatestSubmissions.entries())
+                let temp = Array.from(LatestSubmissions.entries());
                 let arr = Array();
-                for(let i = temp.length - 10; i < temp.length; i++) arr[i - (temp.length - 10)] = temp[i];
+                for (let i = temp.length - 10; i < temp.length; i++)
+                    arr[i - (temp.length - 10)] = temp[i];
 
-                let SerialMap = JSON.stringify(arr)
+                let SerialMap = JSON.stringify(arr);
 
                 return {
                     props: {
@@ -259,7 +274,7 @@ export async function getServerSideProps(context: any) {
                         UniqueProblemCount,
                         ContestCount,
                         ACsubmissions,
-                        SerialMap
+                        SerialMap,
                     },
                 };
             } else {
