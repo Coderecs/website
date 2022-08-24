@@ -93,13 +93,16 @@ function account({
                         </p>
                     </div>
                     <div className="w-full space-y-7">
-                        <div className="w-full bg-primary pb-32 px-12 rounded-xl">
+                        <div className="w-full bg-primary py-12 px-12 rounded-xl flex flex-col space-y-4">
+                            <h2 className="text-center text-white text-xl font-popp">Your last 10 active days</h2>
                             <DailyActivityChart activity={SerialMap} />
                         </div>
-                        <div className="w-full bg-primary pb-32 px-12 rounded-xl">
+                        <div className="w-full bg-primary py-12 px-12 rounded-xl flex flex-col">
+                        <h2 className="text-center text-white text-xl font-popp">Questions solved as per rating</h2>
                             <RatingsChart ratings={ratingDict} />
                         </div>
-                        <div className="w-[80%]">
+                        <div className="w-full flex flex-col">
+                        <h2 className="text-center text-black text-xl font-popp">Questions solved as per tags</h2>
                             <TagsChart tags={tagDict} />
                         </div>
                     </div>

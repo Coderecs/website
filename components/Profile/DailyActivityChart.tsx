@@ -41,7 +41,7 @@ const options = {
             ticks: {
                 color: "white",
                 font: { size: 16 },
-                stepSize: 10,
+                stepSize: 1,
                 beginAtZero: false,
             },
         },
@@ -65,7 +65,7 @@ function DailyActivityChart({ activity }: any) {
         labels,
         datasets: [
             {
-                label: "Questions",
+                label: "Submissions",
                 data: frequency,
                 borderColor: "rgb(255, 255, 255)",
                 backgroundColor: "rgba(255, 255, 255, 1)",
