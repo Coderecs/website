@@ -17,7 +17,10 @@ function account({
     totalSubmissions,
     UniqueProblemCount,
     ContestCount,
+    SerialMap
+    
 }: any) {
+    let DATESubmissionMap = new Map(JSON.parse(SerialMap));
     return (
         <Layout>
             <div className="w-full h-full flex flex-col lg:flex-row overflow-y-scroll scrollbar-hide pb-10">
@@ -93,7 +96,7 @@ function account({
                     <div className="w-full bg-primary pb-32 px-12 rounded-xl">
                         <RatingsChart ratings={ratingDict} />
                     </div>
-                    <div className="w-full">
+                    <div className="w-[50%]">
                         <TagsChart tags={tagDict} />
                     </div>
                 </div>
@@ -147,32 +150,28 @@ export async function getServerSideProps(context: any) {
                 let ContestCount = 0;
                 let SET = new Set(); // unique problems irrespective of their verdict
 
+                let LatestSubmissions = new Map<string, number>(); // number of submissions corresponding to a date in DD-MM-YYYY format (type : string)
+
                 json.result?.forEach((problem: any) => {
                     const prob = {
                         id: problem.id || null,
                         contestId: problem.contestId || null,
-                        creationTimeSeconds:
-                            problem.creationTimeSeconds || null,
-                        relativeTimeSeconds:
-                            problem.relativeTimeSeconds || null,
+                        creationTimeSeconds: problem.creationTimeSeconds || null,
+                        relativeTimeSeconds: problem.relativeTimeSeconds || null,
                         index: problem.problem?.index || null,
                         name: problem.problem?.name || null,
                         type: problem.problem?.type || null,
                         rating: problem.problem?.rating || null,
                         tags: problem.problem?.tags || ["yet to be decided"],
-                        participantType:
-                            problem.author?.participantType || null,
+                        participantType: problem.author?.participantType || null,
                         ghost: problem.author?.ghost || null,
-                        startTimeSeconds:
-                            problem.author?.startTimeSeconds || null,
-                        programmingLanguage:
-                            problem.programmingLanguage || null,
+                        startTimeSeconds: problem.author?.startTimeSeconds || null,
+                        programmingLanguage: problem.programmingLanguage || null,
                         verdict: problem.verdict || null,
                         testset: problem.testset || null,
                         passedTestCount: problem.passedTestCount || null,
                         timeConsumedMillis: problem.timeConsumedMillis || null,
-                        memoryConsumedBytes:
-                            problem.memoryConsumedBytes || null,
+                        memoryConsumedBytes: problem.memoryConsumedBytes || null,
                     };
                     if (
                         prob.verdict === "OK" &&
@@ -194,8 +193,26 @@ export async function getServerSideProps(context: any) {
                     let HASH = Index + Contest;
 
                     SET.add(HASH);
-                });
 
+                    // getting the date of submission
+
+                    let date = new Date(prob.creationTimeSeconds * 1000); // converting unix time to milliseconds.
+
+                    let year = date.getUTCFullYear();
+                    let day = date.getDate();
+                    let month = date.getMonth();
+
+                    let dateString = String(day) + " / " + String(month) + " / " + String(year);
+
+                    // console.log(dateString); // working fine
+
+                    if(LatestSubmissions.has(dateString)) LatestSubmissions.set(dateString, LatestSubmissions.get(dateString)! + 1);
+
+                    else LatestSubmissions.set(dateString, 1);
+
+                    // console.log(LatestSubmissions); // working fine
+                });
+                
                 let ratingDict: any = [];
                 for (let i = 0; i < 35 - 8 + 1; i++) ratingDict.push(0);
 
@@ -225,6 +242,12 @@ export async function getServerSideProps(context: any) {
                 UniqueProblemCount = SET.size;
 
                 let totalSubmissions = json.result?.length;
+                // let LatestSubMap = JSON.stringify(LatestSubmissions);
+                let temp = Array.from(LatestSubmissions.entries())
+                let arr = Array();
+                for(let i = temp.length - 10; i < temp.length; i++) arr[i - (temp.length - 10)] = temp[i];
+
+                let SerialMap = JSON.stringify(arr)
 
                 return {
                     props: {
@@ -236,6 +259,7 @@ export async function getServerSideProps(context: any) {
                         UniqueProblemCount,
                         ContestCount,
                         ACsubmissions,
+                        SerialMap
                     },
                 };
             } else {
