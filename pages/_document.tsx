@@ -9,6 +9,26 @@ class MyDocument extends Document {
   render() {
     return (
       <Html lang='en'>
+        <head>
+        {/* <script>
+            if ('serviceWorker' in navigator) {
+              navigator.serviceWorker
+                .getRegistrations()
+                .then((res) => {
+                  if (res.length > 0) {
+                    res?.[0]?.unregister?.()
+                  }
+                  window.addEventListener('load', () => {
+                    return navigator.serviceWorker
+                    .register('./serviceWorker.js')
+                      .then((reg) => null)
+                      .catch((error) => null)
+                  })
+                })
+                .catch(() => null)
+              }
+          </script> */}
+        </head>
         <Head>
           <meta
             name='description'
