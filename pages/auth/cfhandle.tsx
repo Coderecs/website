@@ -6,7 +6,7 @@ import React, { useState } from "react";
 import Layout from "../../components/Layout/Layout";
 import { db } from "../../serverless/firebase";
 
-function cfhandle() {
+function Cfhandle() {
     const [handle, setHandle] = useState("");
     const router = useRouter();
     const { data: session } = useSession();
@@ -60,4 +60,4 @@ function cfhandle() {
     );
 }
 
-export default cfhandle;
+export default Cfhandle;

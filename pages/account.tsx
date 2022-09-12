@@ -31,6 +31,7 @@ function account({
                             height={200}
                             width={200}
                             className="rounded-full"
+                            alt={user.name}
                         />
                     </div>
                     <div className="flex-[0.7] flex flex-col pl-20 py-8">

@@ -23,6 +23,7 @@ class MyDocument extends Document {
             src='https://scripts.simpleanalyticscdn.com/latest.js'
           ></script>
           <noscript>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src='https://queue.simpleanalyticscdn.com/noscript.gif'
               alt=''
