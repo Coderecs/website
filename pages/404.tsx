@@ -1,5 +1,3 @@
-import React from 'react';
-
 import Layout from '../components/Layout/Layout';
 
 function Custom404() {
@@ -9,6 +7,7 @@ function Custom404() {
         className='flex flex-col items-center justify-center space-y-5'
         style={{ height: 'calc(100vh - 9rem)' }}
       >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src='/assets/images/page_not_found.png'
           className='max-w-lg'
@@ -17,7 +16,7 @@ function Custom404() {
         <div className='text-3xl text-light flex flex-row space-x-3'>
           <p className='text-blue-400 font-bold'>404</p>
           <div style={{ width: 1 }} className='bg-gray-200 opacity-40'></div>
-          <p>The page you're looking for does not exist.</p>
+          <p>The page you are looking for does not exist.</p>
         </div>
       </div>
     </Layout>

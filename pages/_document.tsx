@@ -9,31 +9,12 @@ class MyDocument extends Document {
   render() {
     return (
       <Html lang='en'>
-        <head>
-        {/* <script>
-            if ('serviceWorker' in navigator) {
-              navigator.serviceWorker
-                .getRegistrations()
-                .then((res) => {
-                  if (res.length > 0) {
-                    res?.[0]?.unregister?.()
-                  }
-                  window.addEventListener('load', () => {
-                    return navigator.serviceWorker
-                    .register('./serviceWorker.js')
-                      .then((reg) => null)
-                      .catch((error) => null)
-                  })
-                })
-                .catch(() => null)
-              }
-          </script> */}
-        </head>
         <Head>
           <meta
             name='description'
-            content='Teams is a web app implementation of Microsoft Teams'
+            content='Coderecs is a CP recommender system.'
           />
+          <link rel='manifest' href='/manifest.json' />
         </Head>
         <body>
           <script
@@ -42,6 +23,7 @@ class MyDocument extends Document {
             src='https://scripts.simpleanalyticscdn.com/latest.js'
           ></script>
           <noscript>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src='https://queue.simpleanalyticscdn.com/noscript.gif'
               alt=''
