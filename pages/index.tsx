@@ -6,10 +6,10 @@ import { doc, getDoc } from "firebase/firestore";
 import { db } from "../serverless/firebase";
 import LandingPage from "../components/Home/LandingPage";
 
-const Home: NextPage = ({ loggedIn, cfhandle }: any) => {
+const Home: NextPage = ({ loggedIn, cfhandle, userRating }: any) => {
     return (
         <Layout title="Coderecs">
-            {loggedIn ? <Dashboard /> : <LandingPage />}
+            {loggedIn ? <Dashboard rating={userRating} /> : <LandingPage />}
         </Layout>
     );
 };
@@ -22,12 +22,20 @@ export async function getServerSideProps(context: any) {
         const session = await getSession({ req });
         if (session) {
             const docRef = doc(db, "codeforces", session.user?.email!);
-            const userCFHandle = await getDoc(docRef);
-            if (userCFHandle.data()) {
+            const userCFHandle = (await getDoc(docRef)).data()?.handle;
+            const userRating = (
+                await (
+                    await fetch(
+                        `https://codeforces.com/api/user.info?handles=${userCFHandle}`
+                    )
+                ).json()
+            )["result"][0]["rating"];
+            if (userCFHandle) {
                 return {
                     props: {
-                        cfhandle: userCFHandle.data()?.handle,
+                        cfhandle: userCFHandle,
                         loggedIn: true,
+                        userRating: userRating > 800 ? Math.floor(Number(userRating)/100)*100 : 800,
                     },
                 };
             } else {

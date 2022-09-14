@@ -1,7 +1,7 @@
 import { GoLink } from "react-icons/go";
 import { Question } from "../../typings/Question";
 
-function Tile({ problem, contest, link }: Question) {
+function Tile({ problem, contest, link, rating }: Question) {
     return (
         <div className="w-full bg-white rounded-md hover:bg-[#F5F5F5]">
             <a href={link} target="_blank" rel="noreferrer">
