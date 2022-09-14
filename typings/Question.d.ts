@@ -1,5 +1,6 @@
 export interface Question {
     problem: string,
     contest: string,
-    link: string
+    link: string,
+    rating: Number,
 }
