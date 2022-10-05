@@ -7,6 +7,7 @@ import DailyActivityChart from "../components/Profile/DailyActivityChart";
 import RatingsChart from "../components/Profile/RatingsChart";
 import TagsChart from "../components/Profile/TagsChart";
 import { db } from "../serverless/firebase";
+import { GetServerSideProps } from 'next'
 
 function account({
     ACsubmissions,
@@ -27,7 +28,7 @@ function account({
                 <div className="w-full lg:w-1/4  h-full flex flex-col py-4">
                     <div className="flex-[0.3]  flex items-center justify-center">
                         <Image
-                            src={user.titlePhoto}
+                            src={'https:' + user.titlePhoto}
                             height={200}
                             width={200}
                             className="rounded-full"
@@ -99,11 +100,11 @@ function account({
                             <DailyActivityChart activity={SerialMap} />
                         </div>
                         <div className="w-full bg-primary py-12 px-12 rounded-xl flex flex-col">
-                        <h2 className="text-center text-white text-xl font-popp">Questions solved as per rating</h2>
+                            <h2 className="text-center text-white text-xl font-popp">Questions solved as per rating</h2>
                             <RatingsChart ratings={ratingDict} />
                         </div>
                         <div className="w-full flex flex-col">
-                        <h2 className="text-center text-black text-xl font-popp">Questions solved as per tags</h2>
+                            <h2 className="text-center text-black text-xl font-popp">Questions solved as per tags</h2>
                             <TagsChart tags={tagDict} />
                         </div>
                     </div>
@@ -115,7 +116,7 @@ function account({
 
 export default account;
 
-export async function getServerSideProps(context: any) {
+export const getServerSideProps: GetServerSideProps = async (context) => {
     try {
         const { req } = context;
         const session = await getSession({ req });
@@ -267,7 +268,7 @@ export async function getServerSideProps(context: any) {
                     arr[i - (temp.length - 10)] = temp[i];
 
                 let SerialMap = JSON.stringify(arr);
-
+                console.log(user);
                 return {
                     props: {
                         user,
