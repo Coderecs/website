@@ -9,6 +9,12 @@ import TagsChart from "../components/Profile/TagsChart";
 import { db } from "../serverless/firebase";
 import { GetServerSideProps } from 'next'
 import Card from "../components/Home/Card";
+// swiper importsS
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
+import { Pagination, Navigation } from "swiper";
 
 function account({
     ACsubmissions,
@@ -27,7 +33,7 @@ function account({
                     <title>{cfhandle} - Coderecs</title>
                 </Head>
                 <div className="w-full lg:w-1/4  h-full flex flex-col py-4">
-                    <div className="flex-[0.3]  flex items-center justify-center">
+                    <div className="flex-[0.3] flex items-center justify-center">
                         <Image
                             src={user.titlePhoto}
                             height={200}
@@ -81,37 +87,55 @@ function account({
                     </h1>
                     <h2 className="font-poppins">Welcome Back!</h2>
 
-                    <div className="w-full flex pt-3 pb-3 justify-between">                        
-                        <Card 
+                    <div className="w-full flex pt-3 pb-3 justify-between">
+                        <Card
                             heading="Problems Solved"
                             info={ACsubmissions}
                         />
-                        <Card 
+                        <Card
                             heading="Problems Attempted"
                             info={UniqueProblemCount}
                         />
-                        <Card 
+                        <Card
                             heading="Total Submissions"
                             info={totalSubmissions}
                         />
-                        <Card 
+                        <Card
                             heading="Unsolved Problems"
                             info={UniqueProblemCount - ACsubmissions}
                         />
                     </div>
-                    <div className="w-full space-y-7">
-                        <div className="w-[50%] flex flex-col">
-                            <h2 className="text-center text-black text-xl font-popp">Questions solved as per tags</h2>
-                            <TagsChart tags={tagDict}/>
-                        </div>
-                        <div className="w-full bg-primary py-12 px-12 rounded-xl flex flex-col">
-                            <h2 className="text-center text-white text-xl font-popp">Questions solved as per rating</h2>
-                            <RatingsChart ratings={ratingDict} />
-                        </div>
-                        <div className="w-full bg-primary py-12 px-12 rounded-xl flex flex-col space-y-4">
-                            <h2 className="text-center text-white text-xl font-popp">Your last 10 active days</h2>
-                            <DailyActivityChart activity={SerialMap} />
-                        </div>
+                    <div className="w-[95%] space-y-7">
+                        <h1 className="text-xl text-right">Swipe to see your analytics</h1>
+                        <Swiper
+                            pagination={{
+                                type: "fraction",
+                            }}
+                            navigation={true}
+                            modules={[Pagination, Navigation]}
+                            className="mySwiper"
+                        // material ui defaults
+                        >
+                            <SwiperSlide>
+                                <div className="w-full bg-primary py-12 px-12 rounded-xl flex flex-col">
+                                    <RatingsChart ratings={ratingDict} />
+                                    <h2 className="text-center text-white text-2xl font-popp">Questions solved as per rating</h2>
+                                </div>
+                            </SwiperSlide>
+                            <SwiperSlide>
+                                <div className="w-[70%] flex flex-col p-8">
+                                    <TagsChart tags={tagDict} />
+                                    <h2 className="text-center text-black text-2xl font-popp">Questions solved as per tags</h2>
+                                </div>
+                            </SwiperSlide>
+                            
+                            <SwiperSlide>
+                                <div className="w-full bg-primary py-12 px-12 rounded-xl flex flex-col space-y-4">
+                                    <DailyActivityChart activity={SerialMap} />
+                                    <h2 className="text-center text-white font-popp text-2xl">Your last 10 active days</h2>
+                                </div>
+                            </SwiperSlide>
+                        </Swiper>
                     </div>
                 </div>
             </div>
