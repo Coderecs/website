@@ -8,6 +8,13 @@ import RatingsChart from "../components/Profile/RatingsChart";
 import TagsChart from "../components/Profile/TagsChart";
 import { db } from "../serverless/firebase";
 import { GetServerSideProps } from 'next'
+import Card from "../components/Home/Card";
+// swiper importsS
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
+import { Pagination, Navigation } from "swiper";
 
 function account({
     ACsubmissions,
@@ -26,9 +33,9 @@ function account({
                     <title>{cfhandle} - Coderecs</title>
                 </Head>
                 <div className="w-full lg:w-1/4  h-full flex flex-col py-4">
-                    <div className="flex-[0.3]  flex items-center justify-center">
+                    <div className="flex-[0.3] flex items-center justify-center">
                         <Image
-                            src={'https:' + user.titlePhoto}
+                            src={user.titlePhoto}
                             height={200}
                             width={200}
                             className="rounded-full"
@@ -74,39 +81,61 @@ function account({
                         </div>
                     </div>
                 </div>
-                <div className="w-3/4  h-full p-10">
+                <div className="w-3/4 h-fit p-10 mb-5">
                     <h1 className="text-4xl font-poppins font-bold">
                         Hey {user.firstName}!
                     </h1>
                     <h2 className="font-poppins">Welcome Back!</h2>
 
-                    <div className="w-full flex  justify-around items-center h-2/5">
-                        <div className="py-5 space-y-4 text-lg font-poppins italic">
-                            <p>Problems Solved : {ACsubmissions}</p>
-                            <p>Problems Attempted: {UniqueProblemCount}</p>
-                            <p>Total Submissions: {totalSubmissions}</p>
-                            <p>
-                                Unsolved Problems:{" "}
-                                {UniqueProblemCount - ACsubmissions}
-                            </p>
-                        </div>
-                        <p className="font-poppins">
-                            Scroll down to get your insights
-                        </p>
+                    <div className="w-full flex pt-3 pb-3 justify-between">
+                        <Card
+                            heading="Problems Solved"
+                            info={ACsubmissions}
+                        />
+                        <Card
+                            heading="Problems Attempted"
+                            info={UniqueProblemCount}
+                        />
+                        <Card
+                            heading="Total Submissions"
+                            info={totalSubmissions}
+                        />
+                        <Card
+                            heading="Unsolved Problems"
+                            info={UniqueProblemCount - ACsubmissions}
+                        />
                     </div>
-                    <div className="w-full space-y-7">
-                        <div className="w-full bg-primary py-12 px-12 rounded-xl flex flex-col space-y-4">
-                            <h2 className="text-center text-white text-xl font-popp">Your last 10 active days</h2>
-                            <DailyActivityChart activity={SerialMap} />
-                        </div>
-                        <div className="w-full bg-primary py-12 px-12 rounded-xl flex flex-col">
-                            <h2 className="text-center text-white text-xl font-popp">Questions solved as per rating</h2>
-                            <RatingsChart ratings={ratingDict} />
-                        </div>
-                        <div className="w-full flex flex-col">
-                            <h2 className="text-center text-black text-xl font-popp">Questions solved as per tags</h2>
-                            <TagsChart tags={tagDict} />
-                        </div>
+                    <div className="w-[95%] space-y-7">
+                        <h1 className="text-xl text-right">Swipe to see your analytics</h1>
+                        <Swiper
+                            pagination={{
+                                type: "fraction",
+                            }}
+                            navigation={true}
+                            modules={[Pagination, Navigation]}
+                            className="mySwiper"
+                        // material ui defaults
+                        >
+                            <SwiperSlide>
+                                <div className="w-full bg-primary py-12 px-12 rounded-xl flex flex-col">
+                                    <RatingsChart ratings={ratingDict} />
+                                    <h2 className="text-center text-white text-2xl font-popp">Questions solved as per rating</h2>
+                                </div>
+                            </SwiperSlide>
+                            <SwiperSlide>
+                                <div className="w-[70%] flex flex-col p-8">
+                                    <TagsChart tags={tagDict} />
+                                    <h2 className="text-center text-black text-2xl font-popp">Questions solved as per tags</h2>
+                                </div>
+                            </SwiperSlide>
+                            
+                            <SwiperSlide>
+                                <div className="w-full bg-primary py-12 px-12 rounded-xl flex flex-col space-y-4">
+                                    <DailyActivityChart activity={SerialMap} />
+                                    <h2 className="text-center text-white font-popp text-2xl">Your last 10 active days</h2>
+                                </div>
+                            </SwiperSlide>
+                        </Swiper>
                     </div>
                 </div>
             </div>
@@ -268,7 +297,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
                     arr[i - (temp.length - 10)] = temp[i];
 
                 let SerialMap = JSON.stringify(arr);
-                console.log(user);
+                // console.log(user);
                 return {
                     props: {
                         user,

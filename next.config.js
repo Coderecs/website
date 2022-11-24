@@ -15,7 +15,7 @@ module.exports = withPWA({
             "lh3.googleusercontent.com",
             "avatars.githubusercontent.com",
             "cdn-userpic.codeforces.com",
-            "userpic.codeforces.org",
+            "userpic.codeforces.org"
         ],
     },
 });

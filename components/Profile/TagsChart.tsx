@@ -52,7 +52,7 @@ function TagsChart({ tags }: any) {
         ],
     };
     return (
-        <div className="w-full h-full text-white">
+        <div className="w-full h-[70%] text-white">
             <Doughnut data={data} options={options} />
         </div>
     );
