@@ -28,7 +28,7 @@ function account({
                 <div className="w-full lg:w-1/4  h-full flex flex-col py-4">
                     <div className="flex-[0.3]  flex items-center justify-center">
                         <Image
-                            src={'https:' + user.titlePhoto}
+                            src={user.titlePhoto}
                             height={200}
                             width={200}
                             className="rounded-full"
@@ -268,7 +268,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
                     arr[i - (temp.length - 10)] = temp[i];
 
                 let SerialMap = JSON.stringify(arr);
-                console.log(user);
+                // console.log(user);
                 return {
                     props: {
                         user,
