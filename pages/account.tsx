@@ -26,6 +26,7 @@ function account({
     UniqueProblemCount,
     SerialMap,
 }: any) {
+    console.log(user);
     return (
         <Layout>
             <div className="w-full h-full flex flex-col lg:flex-row overflow-y-scroll scrollbar-hide pb-10">
@@ -72,12 +73,12 @@ function account({
                             <p>
                                 {user.city}, {user.country}
                             </p>
-                            <p>
+                            {user.organization ? <p>
                                 from{" "}
                                 <span className="font-bold">
                                     {user.organization}
                                 </span>
-                            </p>
+                            </p> : <p></p>}
                         </div>
                     </div>
                 </div>
