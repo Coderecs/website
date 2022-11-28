@@ -26,7 +26,6 @@ function account({
     UniqueProblemCount,
     SerialMap,
 }: any) {
-    console.log(user);
     return (
         <Layout>
             <div className="w-full h-full flex flex-col lg:flex-row overflow-y-scroll scrollbar-hide pb-10">
