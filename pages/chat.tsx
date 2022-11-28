@@ -16,7 +16,7 @@ import { useSession } from "next-auth/react";
 
 function chat() {
     return (
-        <Layout>
+        <Layout title="Welcome to Coderecs Chat">
             <Messages />
             <Input />
         </Layout>
@@ -45,16 +45,16 @@ const Input = () => {
     };
     return (
         <div className="absolute bottom-3 left-4 flex flex-col w-[90%] rounded-lg px-2 py-1 bg-gray-200">
-            <div className="flex w-full space-x-2">
+            <div className="flex w-full space-x-2 justify-center">
                 <form className="w-full" onSubmit={sendMessage}>
                     <input
                         type="text"
-                        className="w-4/5 outline-none rounded-lg bg-transparent px-2 py-1 text-black placeholder:text-black"
-                        placeholder={`Message`}
+                        className="w-4/5 outline-none rounded-lg bg-transparent px-2 py-1 text-black placeholder:text-gray-500"
+                        placeholder="Enter you message..."
                         value={message}
                         onChange={(e) => setMessage(e.target.value)}
                     />
-                    <button type="submit" className="hidden">
+                    <button type="submit" className="md:hidden bg-primary text-white px-5 py-2 rounded-lg hover:opacity-90">
                         Send
                     </button>
                 </form>
