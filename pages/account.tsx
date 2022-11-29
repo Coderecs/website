@@ -72,12 +72,12 @@ function account({
                             <p>
                                 {user.city}, {user.country}
                             </p>
-                            <p>
+                            {user.organization ? <p>
                                 from{" "}
                                 <span className="font-bold">
                                     {user.organization}
                                 </span>
-                            </p>
+                            </p> : <p></p>}
                         </div>
                     </div>
                 </div>

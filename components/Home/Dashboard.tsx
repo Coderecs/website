@@ -5,21 +5,14 @@ import Tile from "./Tile";
 function Dashboard({ rating }: { rating: number }) {
     const [questions, setQuestions] = useState<Question[]>([]);
     function shuffle(array: any[]) {
-        let currentIndex = array.length, randomIndex;
-
-        // While there remain elements to shuffle.
-        while (currentIndex != 0) {
-
-            // Pick a remaining element.
-            randomIndex = Math.floor(Math.random() * currentIndex);
-            currentIndex--;
-
-            // And swap it with the current element.
-            [array[currentIndex], array[randomIndex]] = [
-                array[randomIndex], array[currentIndex]];
+        for (var i = array.length - 1; i > 0; i--) {
+            var j = Math.floor(Math.random() * (i + 1));
+            var temp = array[i];
+            array[i] = array[j];
+            array[j] = temp;
         }
-
         return array;
+    
     }
     const getData = async () => {
         const res = await fetch("data/data.json");
@@ -37,14 +30,12 @@ function Dashboard({ rating }: { rating: number }) {
         // 12 questions
         // 1 - X, 2 - X+100, 6- X+200, 2* [X+300], 1*[X+400]
         const same = ques.filter((qu: Question) => qu.rating === rating);
-        const plus100 = ques.filter((qu: Question) => qu.rating === rating - 100);
-        const plus200 = ques.filter((qu: Question) => qu.rating === rating - 200);
-        const plus300 = ques.filter((qu: Question) => qu.rating === rating - 300);
-        const plus400 = ques.filter((qu: Question) => qu.rating === rating - 400);
+        const plus100 = rating > 900 ?  ques.filter((qu: Question) => qu.rating === rating - 100) : same;
+        const plus200 = rating > 1000 ? ques.filter((qu: Question) => qu.rating === rating - 200) : same;
+        const plus300 = rating > 1100 ? ques.filter((qu: Question) => qu.rating === rating - 300) : same;
+        const plus400 = rating > 1200 ?  ques.filter((qu: Question) => qu.rating === rating - 400) : same;
 
-        console.log(same)
-
-        const Ques = [];
+        var Ques = [];
         for (let i = 0; i < 12; i++) {
             if (i == 0) {
                 Ques.push(same[Math.floor(Math.random() * 200)]);
@@ -62,7 +53,8 @@ function Dashboard({ rating }: { rating: number }) {
                 Ques.push(plus400[Math.floor(Math.random() * 200)]);
             }
         }
-        setQuestions(shuffle(Ques));
+        Ques = shuffle(Ques);
+        setQuestions(Ques);
     };
 
     useEffect(() => {

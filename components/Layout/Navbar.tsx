@@ -1,6 +1,6 @@
+/* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
 import { signIn, signOut, useSession } from "next-auth/react";
-import Image from "next/image";
 
 export default function NavBar() {
     const { data: session } = useSession();
@@ -20,6 +20,9 @@ export default function NavBar() {
                     <button className="text-white" onClick={() => signIn()}>Login</button>
                 ) : (
                     <>
+                    <Link href={'/chat'}>
+                        <p className="text-white mx-4 cursor-pointer"> Chat</p>
+                    </Link>
                         <Link href={"/account"}>
                             <img
                                 src={session.user?.image!}
